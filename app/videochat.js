@@ -5,7 +5,7 @@ var localStream;    // 自分の映像ストリームを保存しておく変数
 var connectedCall;  // 接続したコールを保存しておく変数
  
 // SkyWayのシグナリングサーバーへ接続する (APIキーを置き換える必要あり）
-var peer = new Peer({ key: 'bbddc2b0-156c-43e0-9297-e9e8fcb3b151', debug: 3});
+var peer = new Peer({ key: '************************************', debug: 3});
  
 // シグナリングサーバへの接続が確立したときに、このopenイベントが呼ばれる
 peer.on('open', function(){
@@ -133,6 +133,7 @@ peer.on('connection', function(connection){
 function onRecvMessage(data) {
     // 画面に受信したメッセージを表示
     $("#messages").append($("<p>").text(connect.id + ": " + data).css("font-weight", "bold"));
+    //document.write('<img src="' + data + '"' + 'width="300" height="300">');
 }
  
 // DOM要素の構築が終わった場合に呼ばれるイベント
@@ -178,3 +179,19 @@ $(function() {
         connect.close();
     });
 });
+/*
+$(document).ready(function() {
+var userFeed = new Instafeed({
+    target: '#messages',
+    get: 'user', //ユーザーから取得
+    userId: '3285987949', //ユーザーID(先ほど確認した'user_id')
+    sortBy: 'most-recent',//最新記事から順に取得
+    links: true , //画像リンク取得
+    limit: 3, //取得する画像数を設定
+    resolution: 'low_resolution', //画像サイズを設定
+    template: '<li><a href="{{link}}"><img src="{{image}}" target="_blank"></a></li>',
+    accessToken: '3285987949.5c1560b.38fe0218e90b48a1b2a3b828478f882d' //アクセストークン
+    });
+    userFeed.run();
+});
+*/

@@ -3,12 +3,17 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="https://skyway.io/dist/v2/0.3/peer.js"></script>
     <script type="text/javascript" src="videochat.js"></script>
+    <script src="instafeed.min.js"></script>
 </head>
 <body>
     <h1>InstaRTC</h1>
     <div>
         <!-- 自分のビデオを表示 -->
-        <video id="my-video" style="width: 300px;" autoplay></video>
+        <video id="my-video" style="width: 300px;" autoplay>
+        <div id="move-pic">
+        
+        </div>
+        </video>
         <!-- 相手分のビデオを表示 -->
         <video id="peer-video" style="width: 300px;" autoplay></video>
     </div>
@@ -27,5 +32,23 @@
         <button id="send">Send</button>
     </div>
     <div id="messages"></div>
+    <script>
+        $(document).ready(function() {
+            var userFeed = new Instafeed({
+            target: '#messages',
+            get: 'user', //ユーザーから取得
+            userId: '3285987949', //ユーザーID(先ほど確認した'user_id')
+            sortBy: 'most-recent',//最新記事から順に取得
+            links: true , //画像リンク取得
+            limit: 3, //取得する画像数を設定
+            resolution: 'low_resolution', //画像サイズを設定
+            template: '<li><a href="{{link}}"><img src="{{image}}" target="_blank"></a></li>',
+            accessToken: '***************************************************' //アクセストークン
+    });
+            userFeed.run();
+    
+        });
+    </script>
+
 </body>
 </html>
