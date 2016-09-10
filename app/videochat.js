@@ -84,6 +84,15 @@ $(function() {
  
             // video要素のsrcに設定することで、映像を表示する
             $('#peer-video').prop('src', url);
+         
+        // 相手への接続を開始する
+        conn = peer.connect(peer_id);
+ 
+        // 接続が完了した場合のイベントの設定
+        conn.on("open", function() {});
+ 
+        // メッセージ受信イベントの設定
+        conn.on("data", onRecvMessage);
         });
     });
  
@@ -94,7 +103,11 @@ $(function() {
     });
 });
 
-//チャットのjs
+/**
+**チャットの部分のJSのところを記述
+**
+**/
+
 var conn;     // データ通信用connectionオブジェクトの保存用変数 
 
 // 相手からデータ通信の接続要求イベントが来た場合、このconnectionイベントが呼ばれる
