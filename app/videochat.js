@@ -86,13 +86,13 @@ $(function() {
             $('#peer-video').prop('src', url);
          
         // 相手への接続を開始する
-        conn = peer.connect(peer_id);
+        connect = peer.connect(peer_id);
  
         // 接続が完了した場合のイベントの設定
-        conn.on("open", function() {});
+        connect.on("open", function() {});
  
         // メッセージ受信イベントの設定
-        conn.on("data", onRecvMessage);
+        connect.on("data", onRecvMessage);
         });
     });
  
@@ -100,6 +100,7 @@ $(function() {
     $('#call-end').click(function(){
         // ビデオ通話を終了する
         connectedCall.close();
+        connect.close();
     });
 });
 
@@ -107,31 +108,31 @@ $(function() {
 **チャットの部分のJSのところを記述
 **
 **/
-
-var conn;     // データ通信用connectionオブジェクトの保存用変数 
+//connectはPR
+var connect;     // データ通信用connectionオブジェクトの保存用変数 
 
 // 相手からデータ通信の接続要求イベントが来た場合、このconnectionイベントが呼ばれる
 // - 渡されるconnectionオブジェクトを操作することで、データ通信が可能
 peer.on('connection', function(connection){
   　
     // データ通信用に connectionオブジェクトを保存しておく
-    conn = connection;
+    connect = connection;
  
     // 接続が完了した場合のイベントの設定
-    conn.on("open", function() {
+    connect.on("open", function() {
         // 相手のIDを表示する
         // - 相手のIDはconnectionオブジェクトのidプロパティに存在する
-        $("#peer-id").text(conn.id);
+        $("#peer-id").text(connect.id);
     });
  
     // メッセージ受信イベントの設定
-    conn.on("data", onRecvMessage);
+    connect.on("data", onRecvMessage);
 });
  
 // メッセージ受信イベントの設定
 function onRecvMessage(data) {
     // 画面に受信したメッセージを表示
-    $("#messages").append($("<p>").text(conn.id + ": " + data).css("font-weight", "bold"));
+    $("#messages").append($("<p>").text(connect.id + ": " + data).css("font-weight", "bold"));
 }
  
 // DOM要素の構築が終わった場合に呼ばれるイベント
@@ -144,17 +145,17 @@ $(function() {
         var peer_id = $('#peer-id-input').val();
  
         // 相手への接続を開始する
-        conn = peer.connect(peer_id);
+        connect = peer.connect(peer_id);
  
         // 接続が完了した場合のイベントの設定
-        conn.on("open", function() {
+        connect.on("open", function() {
             // 相手のIDを表示する
             // - 相手のIDはconnectionオブジェクトのidプロパティに存在する
-            $("#peer-id").text(conn.id);
+            $("#peer-id").text(connect.id);
         });
  
         // メッセージ受信イベントの設定
-        conn.on("data", onRecvMessage);
+        connect.on("data", onRecvMessage);
     });
  
     // Sendボタンクリック時の動作
@@ -163,7 +164,7 @@ $(function() {
         var message = $("#message").val();
  
         // 送信
-        conn.send(message);
+        connect.send(message);
  
         // 自分の画面に表示
         $("#messages").append($("<p>").html(peer.id + ": " + message));
@@ -174,6 +175,6 @@ $(function() {
  
     // Closeボタンクリック時の動作
     $("#close").click(function() {
-        conn.close();
+        connect.close();
     });
 });
